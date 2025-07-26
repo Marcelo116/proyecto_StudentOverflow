@@ -1,12 +1,13 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, session
 from app.models import Pregunta, Respuesta, Usuario
 from app import db
+from sqlalchemy.orm import joinedload
 import requests
 bp = Blueprint("main", __name__)
 
 @bp.route("/")
 def index():
-   preguntas = Pregunta.query.all()
+   preguntas = Pregunta.query.options(joinedload(Pregunta.usuario)).all()
    return render_template("index.html", preguntas=preguntas)
 
 @bp.route("/preguntar", methods=["GET", "POST"])
@@ -27,7 +28,11 @@ def preguntar():
 @bp.route("/pregunta/<int:id>", methods=["GET", "POST"])
 def detalle_pregunta(id):
     pregunta = Pregunta.query.get_or_404(id)
-    respuestas = Respuesta.query.filter_by(pregunta_id=id).all()
+    respuestas = Respuesta.query.options(joinedload(Respuesta.usuario)).filter_by(pregunta_id=id).all()
+
+    
+    destacada = next((r for r in respuestas if r.automatica), None)
+    otras_respuestas = [r for r in respuestas if r != destacada]
 
     if request.method == "POST":
         if "user_id" not in session:
@@ -45,8 +50,11 @@ def detalle_pregunta(id):
             auto = Respuesta(contenido=resumen, pregunta_id=id, automatica=True)
             db.session.add(auto)
             db.session.commit()
+            destacada = auto
+            otras_respuestas = []
             respuestas = [auto]
-    return render_template("detalle_pregunta.html", pregunta=pregunta, respuestas=respuestas)
+
+    return render_template("detalle_pregunta.html", pregunta=pregunta, destacada=destacada, respuestas=otras_respuestas)
 
 def consultar_wikipedia(query):
     try:

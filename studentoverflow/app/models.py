@@ -5,6 +5,9 @@ class Usuario(db.Model):
     username = db.Column(db.String(64), unique=True, nullable=False)
     email = db.Column(db.String(512), unique=True, nullable=False)
     password = db.Column(db.String(512), nullable=False)
+    
+    preguntas = db.relationship('Pregunta', backref='usuario', lazy=True)
+    respuestas = db.relationship('Respuesta', backref='usuario', lazy=True, foreign_keys='Respuesta.autor_id')
 
 class Pregunta(db.Model):
     id = db.Column(db.Integer, primary_key=True)
