@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 style="text-align: center; align-items: center; gap: 10px; color:  #1a237e;">
+  
+    Bienvenido a StudentOverflow
+    <img src="https://i.pinimg.com/originals/eb/5b/e1/eb5be197a3f3d1d63bc1e0b3b8ef797a.gif" width="120" style="vertical-align: middle; margin-right: 6px;">
+   
+
+</h2>
+
+{% if session.username %}
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="{{ url_for('main.preguntar') }}" style="text-decoration: none;">
+            <button style="background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                 Publicar una nueva pregunta
+            </button>
+        </a>
+    </div>
+{% endif %}
+<h3 style="text-align: center; margin-top: 30px; color: #444; font-weight: bold;">
+    📌 Preguntas recientes
+</h3>
+{% for p in preguntas %}
+
+    <div  class="card">
+       
+        <h4><a href="{{ url_for('main.detalle_pregunta', id=p.id) }}">{{ p.titulo }}</a>
+        <img src="https://cdn-icons-gif.flaticon.com/8718/8718007.gif" width="18" style="vertical-align: middle; margin-right: 6px;">
+    </h4>
+        <small>#Pregunta {{ p.id }}</small>
+    </div>
+{% else %}
+    <p>No hay preguntas aún.</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 20px;">
+    <div style="border: 1px solid #ccc; border-radius: 10px; padding: 30px; width: 300px; background: white;">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" width="60" alt="user icon">
+            <h2 style="color: #007bff;">Registrarse</h2>
+        </div>
+        <form method="POST">
+            <input type="text" name="username" placeholder="Nombre de usuario" required><br>
+            <input type="email" name="email" placeholder="Correo electrónico" required><br>
+            <input type="password" name="password" placeholder="Contraseña" required><br>
+            <button style="background: #007bff;" type="submit">Crear cuenta</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

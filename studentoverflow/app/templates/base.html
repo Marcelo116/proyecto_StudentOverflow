@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>StudentOverflow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #e0e0e0;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left a, .nav-right a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .nav-left a:hover, .nav-right a:hover {
+            text-decoration: underline;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background-color:#007bff ;
+            border-radius: 50%;
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        h2, h3 {
+            color: #444;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #5c5c5c;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #333;
+        }
+        ul li {
+            margin: 6px 0;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-left: 4px solid #5c5c5c;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background-color: #fdfdfd;
+            border-radius: 5px;
+        }
+        .card h4 {
+            margin: 0 0 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <a href="{{ url_for('main.index') }}">🏠 Inicio</a>
+        </div>
+        <div class="nav-right">
+        {% if session.username %}
+            <div class="profile">
+                <div class="avatar">{{ session.username[0]|upper }}</div>
+                <span>{{ session.username }}</span>
+                <a href="{{ url_for('auth.logout') }}">Cerrar sesión</a>
+            </div>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}">Iniciar sesión</a>
+            <a href="{{ url_for('auth.register') }}">Registrarse</a>
+        {% endif %}
+        </div>
+    </nav>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

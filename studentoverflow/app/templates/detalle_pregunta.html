@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 style="color: #444;">{{ pregunta.titulo }}
+    <img src="https://i.pinimg.com/originals/07/ed/75/07ed75a40de90b6055cf7a7e7be5677e.gif" width="50" style="vertical-align: middle; margin-right: 6px;">
+</h2>
+
+{% if respuestas %}
+    <h3 style="margin-top: 30px;">Respuesta destacada
+         
+    </h3>
+    <div style="background-color: #f8f8f8; border: 1px solid #ccc; border-radius: 5px; padding: 15px; margin-bottom: 20px;">
+        {{ respuestas[0].contenido }}
+    </div>
+
+    {% if respuestas|length > 1 %}
+    <h3>Otras respuestas
+        
+       
+    </h3>
+    {% for r in respuestas[1:] %}
+    <div style="background-color: #fefefe; border: 1px solid #ddd; border-radius: 5px; padding: 12px; margin-bottom: 10px;">
+        {{ r.contenido }}
+    </div>
+    {% endfor %}
+    {% endif %}
+{% else %}
+    <div style="text-align: center; margin: 40px auto;">
+        <img src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png" width="100" alt="esperando respuesta">
+        <p>No hay respuestas todavía... Sé el primero en contestar.</p>
+    </div>
+{% endif %}
+
+{% if session.username %}
+<h3>Responder
+    
+
+</h3>
+<form method="POST">
+    <textarea name="contenido" rows="4" placeholder="Escribe tu respuesta aquí..." required></textarea>
+    <button  style="background: #007bff;" type="submit">Responder</button>
+</form>
+{% endif %}
+{% endblock %}
